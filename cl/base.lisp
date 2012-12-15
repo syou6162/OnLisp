@@ -66,3 +66,8 @@ y ; (3 4)
 ;; 最適化の具合とかを調整するっぽい
 (proclaim '(inline last1 single append1 conc1 mklist))
 
+(atom 1) ; T
+(atom "aaa") ; T
+(atom '(1 2)) ; NIL
+(atom (cons 1 2)) ; NIL
+
