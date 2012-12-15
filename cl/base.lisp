@@ -76,6 +76,12 @@ y ; (3 4)
 (foo 1 2) ; (1 2 NIL NIL)
 (foo 1 2 3) ; (1 2 3 NIL)
 (foo 1 2 3 4) ; (1 2 3 4)
+; (foo 1 2 3 4 5) これは too many argumentで死んでしまう
+
+(defun foo0 (a b &optional (c 1 d)) (list a b c d))
+(foo0 1 2) ; (1 2 1 NIL)
+(foo0 1 2 3) ; (1 2 3 T)
+; (foo0 1 2 3 4) Too many arguments
 
 ;; キーワード引数が取れるらしい
 (defun foo1 (&key a b c) (list a b c))
