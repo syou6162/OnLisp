@@ -71,3 +71,19 @@ y ; (3 4)
 (atom '(1 2)) ; NIL
 (atom (cons 1 2)) ; NIL
 
+(defun foo (a b &optional c d) (list a b c d))
+
+(foo 1 2) ; (1 2 NIL NIL)
+(foo 1 2 3) ; (1 2 3 NIL)
+(foo 1 2 3 4) ; (1 2 3 4)
+
+;; キーワード引数が取れるらしい
+(defun foo1 (&key a b c) (list a b c))
+(foo1) ; (NIL NIL NIL)
+(foo1 :a 1) ; (1 NIL NIL)
+(foo1 :b 1) ; (NIL 1 NIL)
+(foo1 :c 1) ; (NIL NIL 1)
+(foo1 :a 1 :c 3) ; (1 NIL 3)
+(foo1 :a 1 :b 2 :c 3) ; (1 2 3)
+(foo1 :a 1 :c 3 :b 2) ; (1 2 3)
+
