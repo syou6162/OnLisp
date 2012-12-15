@@ -83,3 +83,57 @@ i ; 2
 
 (count-instances 'a '((a b c) (a d a) (a c c a))) ; (1 2 2)
 
+;; 多値の扱い型。clojureの分配と似ている
+(multiple-value-bind (x y) (truncate 2.1)
+  (+ x y)) ; 2.1
+
+;; utility functions
+
+(defun filter (fn lst)
+  (reduce
+   #'(lambda (result x)
+       (if (funcall fn x)
+	   (append result (list x))
+	   result))
+   lst
+   :initial-value nil))
+
+(filter #'evenp '(1 2 3 4 5 6 7)) ; (2 4 6)
+
+(defun group (source n)
+  (if (zerop n) (error "zero length"))
+  (labels ((rec (source acc)
+	     (let ((rest (nthcdr n source)))
+	       (if (consp rest)
+		   (rec rest (cons (subseq source 0 n) acc))
+		   (nreverse (cons source acc))))))
+    (if source (rec source nil) nil)))
+
+(group '(1 2 3 4 5 6 7 8 9) 2) ; ((1 2) (3 4) (5 6) (7 8) (9))
+
+(nthcdr 3 '(1 2 3 4 5 6 7 8 9)) ; (4 5 6 7 8 9)
+(subseq '(1 2 3 4 5 6 7 8 9) 1 3) ; (2 3)
+
+(defun flatten (lst)
+  (labels ((rec (source acc)
+	     (cond ((null source) acc)
+		   ((atom source) (cons source acc))
+		   (t (rec (car source) (rec (cdr source) acc))))))
+    (rec lst nil)))
+
+(flatten '(a (b c) ((d e) f))) ; (A B C D E F)
+
+(defun prune (test tree)
+  (labels ((rec (tree acc)
+	     (cond ((null tree) (nreverse acc))
+		   ((consp (car tree))
+		    (rec (cdr tree)
+			 (cons (rec (car tree) nil) acc)))
+		   (t (rec (cdr tree)
+			   (if (funcall test (car tree))
+			       acc
+			       (cons (car tree) acc)))))))
+    (rec tree nil)))
+
+(prune #'evenp '(1 2 (3 (4 5) 6) 7 8 (9))) ; (1 (3 (5)) 7 (9))
+
