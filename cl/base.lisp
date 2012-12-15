@@ -63,3 +63,6 @@ y ; (3 4)
 (mapcar (lambda (x) (if (> x 0) (list x) nil)) '(-4 6 -23 1 0 12 ))
 ; (NIL (6) NIL (1) NIL (12))
 
+;; 最適化の具合とかを調整するっぽい
+(proclaim '(inline last1 single append1 conc1 mklist))
+
