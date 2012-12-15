@@ -34,3 +34,17 @@ nil ; NIL
 ; nが付くと破壊的
 (nreverse japanese) ; "語本日"
 japanese ; "語本日"
+
+(consp 1) ; NIL
+(consp '(1 . 2)) ; T
+
+(setq x '(1 2))
+(cons 0 x) ; (0 1 2)
+x ; (1 2)
+(setq y '(3 4))
+(nconc x y) ; (1 2 3 4)
+x ; (1 2 3 4)
+y ; (3 4)
+
+(append '(1 2) '(3 4)) ; (1 2 3 4)
+
